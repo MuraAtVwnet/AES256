@@ -6,6 +6,7 @@ Param(
 	[switch]$Decrypto,	# 復号化
 	$KeyPath,			# 共通鍵ファイルの Path
 	$KeyBase64,			# 共通鍵(Base64)
+	$OutPath,			# 出力先フォルダ
 	[array]$Path		# 処理対象ファイル
 )
 
@@ -137,7 +138,7 @@ if( $PsMajorVertion -le 2 ){
 
 if( $Path -eq $null ){
 	echo "Usage..."
-	echo " .\aes256.ps1 [-Encrypto|-Decrypto] [-KeyPath KeyFilePath|-KeyBase64 KeyText] -Path InputFilePath(s)"
+	echo " .\aes256.ps1 [-Encrypto|-Decrypto] [-KeyPath KeyFilePath|-KeyBase64 KeyText] -OutPath 出力先フォルダ(省略可) -Path InputFilePath(s)"
 	exit
 }
 
@@ -153,6 +154,19 @@ if( (($Encrypto -eq $fals) -and ( $Decrypto -eq $false)) -or `
 	(($Encrypto -eq $true) -and ( $Decrypto -eq $true))){
 	echo "[FAIL] select -Encrypto or -Decrypto"
 	exit
+}
+
+# 出力先フォルダが指定されている時
+if( $OutPath -ne $null ){
+	if( -not (Test-Path $OutPath)){
+		try{
+			md $OutPath
+		}
+		catch{
+			echo "[FAIL] $OutPath が作成できない"
+			exit
+		}
+	}
 }
 
 ### 鍵読み込み
@@ -224,8 +238,25 @@ foreach($TergetFile in $Path){
 			exit
 		}
 
-		# ファイル出力
-		[System.IO.File]::WriteAllBytes($EncryptoFileName, $ByteEncryptoData)
+		try{
+			# ファイル出力
+			[System.IO.File]::WriteAllBytes($EncryptoFileName, $ByteEncryptoData)
+		}
+		catch{
+			echo "[FAIL] 暗号ファイル出力失敗"
+			exit
+		}
+
+		if( $OutPath -ne $null ){
+			try{
+				# 出力ファイル移動
+				move -Path $EncryptoFileName -Destination $OutPath -Force
+			}
+			catch{
+				echo "[FAIL] 出力ファイル移動失敗"
+				exit
+			}
+		}
 	}
 	# 復号化
 	else{
@@ -251,7 +282,24 @@ foreach($TergetFile in $Path){
 			continue
 		}
 
-		# 平文ファイル出力
-		[System.IO.File]::WriteAllBytes($DecryptoFileName, $BytePlainData)
+		try{
+			# 平文ファイル出力
+			[System.IO.File]::WriteAllBytes($DecryptoFileName, $BytePlainData)
+		}
+		catch{
+			echo "[FAIL] 復号ファイル出力失敗"
+			exit
+		}
+
+		if( $OutPath -ne $null ){
+			try{
+				# 出力ファイル移動
+				move -Path $DecryptoFileName -Destination $OutPath -Force
+			}
+			catch{
+				echo "[FAIL] 出力ファイル移動失敗"
+				exit
+			}
+		}
 	}
 }
