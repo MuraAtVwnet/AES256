@@ -22,15 +22,15 @@ PowerShell 3.0 以降環境で動作します
 以下スクリプトに、暗号化するファイルのパス(又は Get-ChildItem で得られる fileinfo)と共通鍵のフルパス又は Base64 文字列(-KeyBase64)を与えると、AES256 で暗号化したファイルを作成します(拡張子 .enc)
 暗号化するファイルは複数指定できます。
 
-    AES256.ps1 -Encrypto -KeyPath 共通鍵のフルパス -Path 暗号化するファイル
-    AES256.ps1 -Encrypto -KeyBase64 Base64共通鍵 -Path 暗号化するファイル
+    AES256.ps1 -Encrypto -KeyPath 共通鍵のフルパス -OutPath 出力先フォルダ(省略可) -Path 暗号化するファイル
+    AES256.ps1 -Encrypto -KeyBase64 Base64共通鍵 -OutPath 出力先フォルダ(省略可) -Path 暗号化するファイル
 
 ・復号化
 以下スクリプトに、復号化するファイルのパス(又は Get-ChildItem で得られる fileinfo)と共通鍵のフルパス又は Base64 文字列(-KeyBase64)を与えると、復号ファイルを作成します(注意:既存ファイルがあれば上書き)
 復号化するファイルは複数指定できます。
 
-    AES256.ps1 -Decrypto -KeyPath 共通鍵のフルパス -Path 復号化するファイル
-    AES256.ps1 -Decrypto -KeyBase64 Base64共通鍵 -Path 復号化するファイル
+    AES256.ps1 -Decrypto -KeyPath 共通鍵のフルパス -OutPath 出力先フォルダ(省略可) -Path 復号化するファイル
+    AES256.ps1 -Decrypto -KeyBase64 Base64共通鍵 -OutPath 出力先フォルダ(省略可) -Path 復号化するファイル
 
 ■ 実行例
 ・鍵ファイルを指定して暗号化
