@@ -10,7 +10,7 @@ PowerShell 3.0 以降環境で動作します
 
     3.0 (Windows 7)
     5.1 (Windows 10)
-    6.0 beta 9(Windows 10)
+    6.0 beta 9(Windows 10/CentOS 7)
 
 ■ 使用方法
 ・共通鍵の作成
@@ -49,3 +49,7 @@ PowerShell 3.0 以降環境で動作します
 ■ 注意事項
 AES256 のストリーミングを使わず、オンメモリーで暗号/復号しています。
 このため、でかいファイルを暗号/復号する場合は、メモリーに余裕のある環境での実行をお勧めします。
+
+■ Web site
+PowerShell でファイルの AES256 暗号/復号
+http://www.vwnet.jp/Windows/PowerShell/2017103101/AES256byPowerShell.htm
