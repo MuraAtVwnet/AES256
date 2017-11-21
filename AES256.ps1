@@ -228,6 +228,12 @@ foreach($TergetFile in $Path){
 		# 暗号化ファイル名
 		$EncryptoFileName = $TergetFileName + "." + $ExtName
 
+		# 出力フォルダが指定されている時
+		if( $OutPath -ne $null ){
+			$FileName =  Split-Path -Leaf $EncryptoFileName
+			$EncryptoFileName = Join-Path $OutPath $FileName
+		}
+
 		# データファイル読み込み
 		$BytePlainData = [System.IO.File]::ReadAllBytes($TergetFileName)
 
@@ -243,19 +249,8 @@ foreach($TergetFile in $Path){
 			[System.IO.File]::WriteAllBytes($EncryptoFileName, $ByteEncryptoData)
 		}
 		catch{
-			echo "[FAIL] 暗号ファイル出力失敗"
+			echo "[FAIL] 暗号ファイル出力失敗 : $EncryptoFileName"
 			exit
-		}
-
-		if( $OutPath -ne $null ){
-			try{
-				# 出力ファイル移動
-				move -Path $EncryptoFileName -Destination $OutPath -Force
-			}
-			catch{
-				echo "[FAIL] 出力ファイル移動失敗"
-				exit
-			}
 		}
 	}
 	# 復号化
@@ -272,6 +267,12 @@ foreach($TergetFile in $Path){
 		$ChangeString = "."+ $ExtName
 		$DecryptoFileName = $TergetFileName.Replace($ChangeString,"")
 
+		# 出力フォルダが指定されている時
+		if( $OutPath -ne $null ){
+			$FileName =  Split-Path -Leaf $DecryptoFileName
+			$DecryptoFileName = Join-Path $OutPath $FileName
+		}
+
 		# 暗号化ファイル読み込み
 		$ByteEncryptoData = [System.IO.File]::ReadAllBytes($TergetFileName)
 
@@ -287,19 +288,8 @@ foreach($TergetFile in $Path){
 			[System.IO.File]::WriteAllBytes($DecryptoFileName, $BytePlainData)
 		}
 		catch{
-			echo "[FAIL] 復号ファイル出力失敗"
+			echo "[FAIL] 復号ファイル出力失敗 : $DecryptoFileName"
 			exit
-		}
-
-		if( $OutPath -ne $null ){
-			try{
-				# 出力ファイル移動
-				move -Path $DecryptoFileName -Destination $OutPath -Force
-			}
-			catch{
-				echo "[FAIL] 出力ファイル移動失敗"
-				exit
-			}
 		}
 	}
 }
