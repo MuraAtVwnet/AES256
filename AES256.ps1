@@ -150,8 +150,24 @@ if( ($KeyPath -eq $null) -and `
 }
 
 # 暗号/復号オプション
-if( (($Encrypto -eq $fals) -and ( $Decrypto -eq $false)) -or `
-	(($Encrypto -eq $true) -and ( $Decrypto -eq $true))){
+if( ($Encrypto -eq $false) -and ( $Decrypto -eq $false) ){
+
+	# 対象ファイルの拡張子をチェック
+	$1stTergetFile = $Path[0]
+	$FileName = Split-Path $1stTergetFile -Leaf
+	$FileNameParts = $FileName.Split(".")
+	$Extent = $FileNameParts[$FileNameParts.Count-1]
+
+	# 暗号ファイルなので復号が指定されたことにする
+	if( $Extent -ne $ExtName ){
+		$Encrypto = $true
+	}
+	# 通常ファイルなので暗号が指定されたことにする
+	else{
+		$Decrypto = $true
+	}
+}
+elseif(($Encrypto -eq $true) -and ( $Decrypto -eq $true)){
 	echo "[FAIL] select -Encrypto or -Decrypto"
 	exit
 }
