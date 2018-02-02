@@ -10,7 +10,7 @@ PowerShell 3.0 以降環境で動作します
 
     3.0 (Windows 7)
     5.1 (Windows 10)
-    6.0 beta 9(Windows 10/CentOS 7)
+    6.0 (Windows 10/CentOS 7)
 
 ■ 使用方法
 ・共通鍵の作成
